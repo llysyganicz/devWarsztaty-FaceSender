@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+using System;
 
 namespace FaceSender
 {
@@ -21,6 +23,8 @@ namespace FaceSender
 
             if (orderDetails != null)
             {
+                orderDetails.RowKey = orderDetails.PhotoName;
+                orderDetails.PartitionKey = DateTime.UtcNow.DayOfYear.ToString();
                 orders.Add(orderDetails);
                 return new OkObjectResult("Order saved.");
             }
@@ -28,7 +32,7 @@ namespace FaceSender
         }
     }
 
-    public class OrderDetails
+    public class OrderDetails : TableEntity
     {
         public string CustomerName { get; set; }
         public string CustomerEmail { get; set; }
