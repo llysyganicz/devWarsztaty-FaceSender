@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -28,14 +29,21 @@ namespace FaceSender
             if (resultList.Any())
             {
                 var firstElement = resultList.First();
-                return new JsonResult(new
+
+                var resolutions = firstElement.Resolutions.Split(',');
+                var requests = new List<PictureResizeRequest>();
+
+                foreach (var resolution in resolutions)
                 {
-                    firstElement.CustomerName,
-                    firstElement.CustomerEmail,
-                    firstElement.PhotoName,
-                    firstElement.PhotoHeight,
-                    firstElement.PhotoWidth
-                });
+                    var resParams = resolution.Split('x');
+                    requests.Add(new PictureResizeRequest
+                    {
+                        FileName = firstElement.PhotoName,
+                        Width = int.Parse(resParams[0]),
+                        Height = int.Parse(resParams[1])
+                    });
+                }
+                return new JsonResult(new { requests, firstElement.CustomerEmail });
             }
 
             return new NotFoundResult();

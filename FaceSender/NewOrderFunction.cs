@@ -5,7 +5,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 
@@ -36,8 +35,7 @@ namespace FaceSender
     {
         public string CustomerName { get; set; }
         public string CustomerEmail { get; set; }
-        public int PhotoWidth { get; set; }
-        public int PhotoHeight { get; set; }
         public string PhotoName { get; set; }
+        public string Resolutions { get; set; }
     }
 }
